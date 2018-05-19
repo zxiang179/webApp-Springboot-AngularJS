@@ -18,5 +18,27 @@ public class CustomerService {
 		List<Customer> customers = customerRepository.findAll();
 		return customers;
 	}
+	
+	public Customer findCustomerByCustomerName(String name) {
+		Customer customer = customerRepository.findCustomerByCustomerName(name);
+		return customer;
+	}
+	
+	public Integer getMaxID() {
+		Integer id = customerRepository.getMaxID();
+		return id;
+	}
+	
+	public void addCustomer(String id,String name,String phone,String address) {
+		customerRepository.insertCustomer(id,name,phone,address);
+	}
 
+	public boolean findCustomerByNameAndPhone(String name,String phone) {
+		Customer customer = customerRepository.findCustomerByNameAndPhone(name,phone);
+		if(customer==null) {
+			return false;
+		}else {
+			return true;
+		}
+	}
 }

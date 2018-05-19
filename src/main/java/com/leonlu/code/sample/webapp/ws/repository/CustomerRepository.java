@@ -21,7 +21,15 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>{
 	
 	@Modifying
 	@Query(value = "INSERT INTO customer(ID,name,phone,address) VALUES (?1,?2,?3,?4)",nativeQuery=true)
-	public void insertQuestion(String ID,String name,String phone,int address);
+	public void insertCustomer(String ID,String name,String phone,String address);
 	
+	@Query(value = "select * from customer where name = ?1",nativeQuery = true)
+	public Customer findCustomerByCustomerName(String name);
+	
+	@Query(value = "select count(*) from customer",nativeQuery = true)
+	public Integer getMaxID();
+	
+	@Query(value = "select * from customer where name = ?1 and phone = ?2",nativeQuery = true)
+	public Customer findCustomerByNameAndPhone(String name,String phone);
 
 }
