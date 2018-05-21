@@ -43,7 +43,7 @@ public class RestaurantController {
 	 */
 	//http://localhost:8080/api/restaurant/register?name=ZX&phone=13127879080&address=shanghai&saleNum=0&credits=5
 	@RequestMapping(value = "/register",method=RequestMethod.GET)
-	public boolean registerRestaurant(String name, String id, String address, String phone, String saleNum, Long credits) {
+	public boolean registerRestaurant(String name, String address, String phone, String saleNum, Long credits) {
 		//根据用户名查找用户是否存在
 		Restaurant restaurant = restaurantService.findRestaurantByRestaurantName(name);
 		if(restaurant==null) {

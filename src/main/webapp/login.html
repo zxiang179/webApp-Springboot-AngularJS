@@ -1,83 +1,207 @@
 <!DOCTYPE html>
- <html ng-app="ui.bootstrap.demo" xmlns="http://www.w3.org/1999/xhtml">
- <head>
-     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-     <link href="vendor/bootstrap/bootstrap.min.css" rel="stylesheet" />
-     <title></title>
- 
-     <script src="vendor/angular/angular.js"></script>
-     <script src="https://cdn.bootcss.com/angular-ui-bootstrap/1.3.2/ui-bootstrap-tpls.js"></script>
-     
-     <script>
- 
-         angular.module('ui.bootstrap.demo', ['ui.bootstrap']).controller('TabsDemoCtrl', function ($scope, $window) {
-             
-         });
-     </script>
- </head>
- <body>
-     <div ng-controller="TabsDemoCtrl">
-        <uib-tabset active="active" type="tabs">
-             <uib-tab index="0" heading="用户入口">
-             
-             	<div style="width: 600px; margin:0 auto; padding: 60px;">
-			        <h4>用户登录</h4>
-			        <div class="form-group">
-			            <label>用户名</label>
-			            <input type="text" class="form-control" ng-model="username">            
-			        </div>
-			        <div class="form-group">
-			            <label>密码</label>
-			            <input type="text" class="form-control" ng-model="password">            
-			        </div>
-			        <div class="form-group">
-			            <button class="btn btn-primary" ng-click="login()">登录</button>
-			            <button class="btn btn-primary" ng-click="login()">注册</button>
-			            <p class="text-danger" ng-if="msg.length>0">提示信息：{{msg}}</p>
-			        </div>
-			    </div>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="vendor/bootstrap/bootstrap.min.css" rel="stylesheet"/>
+    <title></title>
 
-			 </uib-tab>
-			 
-             <uib-tab index="1" heading="快递员入口" >
-             	<div style="width: 600px; margin:0 auto; padding: 60px;">
-			        <h4>快递员登录</h4>
-			        <div class="form-group">
-			            <label>用户名</label>
-			            <input type="text" class="form-control" ng-model="username">            
-			        </div>
-			        <div class="form-group">
-			            <label>密码</label>
-			            <input type="text" class="form-control" ng-model="password">            
-			        </div>
-			        <div class="form-group">
-			            <button class="btn btn-primary" ng-click="login()">登录</button>
-			            <button class="btn btn-primary" ng-click="login()">注册</button>
-			            <p class="text-danger" ng-if="msg.length>0">提示信息：{{msg}}</p>
-			        </div>
-			    </div>
-             </uib-tab>
-             
-             <uib-tab index="2" heading="商家入口" >
-	             <div style="width: 600px; margin:0 auto; padding: 60px;">
-				        <h4>商家登录</h4>
-				        <div class="form-group">
-				            <label>用户名</label>
-				            <input type="text" class="form-control" ng-model="username">            
-				        </div>
-				        <div class="form-group">
-				            <label>密码</label>
-				            <input type="text" class="form-control" ng-model="password">            
-				        </div>
-				        <div class="form-group">
-				            <button class="btn btn-primary" ng-click="login()">登录</button>
-				            <button class="btn btn-primary" ng-click="login()">注册</button>
-				            <p class="text-danger" ng-if="msg.length>0">提示信息：{{msg}}</p>
-				        </div>
-				    </div>    
-             </uib-tab>
-             
-         </uib-tabset>
-     </div>
- </body>
- </html>
+    <script src="lib/js/angular/angular.js"></script>
+    <script src="lib/js/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+    <script src="js/connection.ser.js"></script>
+
+
+    <script>
+        angular.module('loginApp', ['ui.bootstrap', 'Utils']).controller('TabsDemoCtrl',
+        function ($scope, $window, $uibModal,Connection) {
+            $scope.login = login;
+            $scope.showCustomerRegisterpanel = showCustomerRegisterpanel;
+            $scope.showCourierRegisterpanel = showCourierRegisterpanel;
+            $scope.showRestaurantRegisterpanel = showRestaurantRegisterpanel;
+            function login(object,url) {
+                Connection.get(url,{"name":object.username,"phone":object.phone},function (res) {
+                    alert(res.data);
+                });
+            }
+
+            function showCustomerRegisterpanel() {
+                $uibModal.open({
+                   animation: true,
+                    size: 'lg',
+                    templateUrl: 'customerRegister.html',
+                    controller: 'CustomerRegisterCtrl'
+                });
+            }
+
+            function showCourierRegisterpanel() {
+                $uibModal.open({
+                   animation: true,
+                   size: 'lg',
+                   templateUrl: 'courierRegister.html',
+                   controller: 'CourierRegisterCtrl'
+               });
+            }
+
+            function showRestaurantRegisterpanel() {
+                $uibModal.open({
+                                   animation: true,
+                                   size: 'lg',
+                                   templateUrl: 'restaurantRegister.html',
+                                   controller: 'RestaurantRegisterCtrl'
+                               });
+            }
+        }).controller('CustomerRegisterCtrl', function ($scope,Connection,$uibModalInstance) {
+            $scope.ok = ok;
+            function ok() {
+                Connection.get('/api/customer/register',{"name":$scope.name,"phone":$scope.phone,"address":$scope.address},function (res) {
+                    $uibModalInstance.close();
+                    alert("success");
+                })
+            }
+        }).controller('CourierRegisterCtrl', function ($scope,Connection,$uibModalInstance) {
+            $scope.ok = ok;
+            function ok() {
+                Connection.get('/api/courier/register',{"name":$scope.name,"phone":$scope.phone},function (res) {
+                    $uibModalInstance.close();
+                    alert("success");
+                })
+            }
+        }).controller('RestaurantRegisterCtrl', function ($scope,Connection,$uibModalInstance) {
+            $scope.ok = ok;
+            function ok() {
+                Connection.get('/api/restaurant/register',{"name":$scope.name,"phone":$scope.phone,"address":$scope.address,
+                    "saleNum":$scope.saleNum,"credits":$scope.credits},function (res) {
+                    $uibModalInstance.close();
+                    alert("success");
+                })
+            }
+        })
+    </script>
+  </head>
+  <body ng-app="loginApp">
+    <div ng-controller="TabsDemoCtrl">
+      <uib-tabset active="active" type="tabs">
+        <uib-tab index="0" heading="用户入口">
+
+          <div style="width: 600px; margin:0 auto; padding: 60px;">
+            <h4>用户登录</h4>
+            <div class="form-group">
+              <label>用户名</label>
+              <input type="text" class="form-control" ng-model="customer.username">
+            </div>
+            <div class="form-group">
+              <label>密码</label>
+              <input type="text" class="form-control" ng-model="customer.phone">
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary" ng-click="login(customer,'/api/customer/login')">登录</button>
+              <button class="btn btn-primary" ng-click="showCustomerRegisterpanel('/api/customer/register')">注册</button>
+            </div>
+          </div>
+
+        </uib-tab>
+
+        <uib-tab index="1" heading="快递员入口">
+          <div style="width: 600px; margin:0 auto; padding: 60px;">
+            <h4>快递员登录</h4>
+            <div class="form-group">
+              <label>用户名</label>
+              <input type="text" class="form-control" ng-model="courier.username">
+            </div>
+            <div class="form-group">
+              <label>密码</label>
+              <input type="text" class="form-control" ng-model="courier.password">
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary" ng-click="login(courier,'/api/courier/login')">登录</button>
+              <button class="btn btn-primary" ng-click="showCourierRegisterpanel('/api/courier/register')">注册</button>
+            </div>
+          </div>
+        </uib-tab>
+
+        <uib-tab index="2" heading="商家入口">
+          <div style="width: 600px; margin:0 auto; padding: 60px;">
+            <h4>商家登录</h4>
+            <div class="form-group">
+              <label>用户名</label>
+              <input type="text" class="form-control" ng-model="restaurant.username">
+            </div>
+            <div class="form-group">
+              <label>密码</label>
+              <input type="text" class="form-control" ng-model="restaurant.password">
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary" ng-click="login(restaurant,'/api/restaurant/login')">登录</button>
+              <button class="btn btn-primary" ng-click="showRestaurantRegisterpanel()">注册
+              </button>
+            </div>
+          </div>
+        </uib-tab>
+
+      </uib-tabset>
+    </div>
+  </body>
+  <script type="text/ng-template" id="customerRegister.html">
+    <div class="modal-body col-md-12">
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" class="form-control" ng-model="name">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="text" class="form-control" ng-model="phone">
+      </div>
+      <div class="form-group">
+        <label>地址</label>
+        <input type="text" class="form-control" ng-model="address">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-warning" type="button" ng-click="ok()">确定</button>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="courierRegister.html">
+    <div class="modal-body col-md-12">
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" class="form-control" ng-model="name">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="text" class="form-control" ng-model="phone">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-warning" type="button" ng-click="ok()">确定</button>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="restaurantRegister.html">
+    <div class="modal-body col-md-12">
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" class="form-control" ng-model="name">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="text" class="form-control" ng-model="phone">
+      </div>
+      <div class="form-group">
+        <label>地址</label>
+        <input type="text" class="form-control" ng-model="address">
+      </div>
+      <div class="form-group">
+        <label>saleNum</label>
+        <input type="text" class="form-control" ng-model="saleNum">
+      </div>
+      <div class="form-group">
+        <label>credits</label>
+        <input type="text" class="form-control" ng-model="credits">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-warning" type="button" ng-click="ok()">确定</button>
+    </div>
+  </script>
+</html>
