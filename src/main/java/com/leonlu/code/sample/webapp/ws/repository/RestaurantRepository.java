@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.leonlu.code.sample.webapp.ws.domain.Food;
 import com.leonlu.code.sample.webapp.ws.domain.Restaurant;
+
 
 @Transactional
 @Repository
@@ -20,7 +22,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
 	@Modifying
 	@Query(value = "INSERT INTO restaurant(rest_name,rest_id,address,phone,sale_number,credits) VALUES (?1,?2,?3,?4,?5,?6)", nativeQuery = true)
-	public void insertRestaurant(String name, String id, String address, String phone, String saleNum, Long credits);
+	public void insertRestaurant(String name, String id, String address,
+			String phone, String saleNum, Long credits);
 
 	@Query(value = "select * from restaurant where rest_name = ?1", nativeQuery = true)
 	public Restaurant findRestaurantByRestaurantName(String name);

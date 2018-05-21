@@ -24,7 +24,7 @@ public class Order {
 	private Customer customerID;
 	
 	@ManyToOne
-	@JoinColumn(name = "c_id")
+	@JoinColumn(name = "c_id",nullable = true)
 	private Courier courier;
 	
 	@ManyToOne

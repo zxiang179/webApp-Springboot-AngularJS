@@ -22,7 +22,7 @@ public class RestaurantController {
 		List<Restaurant> restaurants = restaurantService.findAllRestaurant();
 		return restaurants;
 	}
-
+	
 	/**
 	 * 返回true表示登陆成功，返回false表示登陆失败
 	 * @param name
@@ -41,7 +41,7 @@ public class RestaurantController {
 	 * @param address
 	 * @return
 	 */
-	//http://localhost:8080/api/customer/register?name=zx&phone=13127879080&address=shanghai
+	//http://localhost:8080/api/restaurant/register?name=ZX&phone=13127879080&address=shanghai&saleNum=0&credits=5
 	@RequestMapping(value = "/register",method=RequestMethod.GET)
 	public boolean registerRestaurant(String name, String id, String address, String phone, String saleNum, Long credits) {
 		//根据用户名查找用户是否存在
