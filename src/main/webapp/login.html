@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+ <html ng-app="ui.bootstrap.demo" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <link href="vendor/bootstrap/bootstrap.min.css" rel="stylesheet" />
+     <title></title>
+ 
+     <script src="vendor/angular/angular.js"></script>
+     <script src="https://cdn.bootcss.com/angular-ui-bootstrap/1.3.2/ui-bootstrap-tpls.js"></script>
+     
+     <script>
+ 
+         angular.module('ui.bootstrap.demo', ['ui.bootstrap']).controller('TabsDemoCtrl', function ($scope, $window) {
+             
+         });
+     </script>
+ </head>
+ <body>
+     <div ng-controller="TabsDemoCtrl">
+        <uib-tabset active="active" type="tabs">
+             <uib-tab index="0" heading="用户入口">
+             
+             	<div style="width: 600px; margin:0 auto; padding: 60px;">
+			        <h4>用户登录</h4>
+			        <div class="form-group">
+			            <label>用户名</label>
+			            <input type="text" class="form-control" ng-model="username">            
+			        </div>
+			        <div class="form-group">
+			            <label>密码</label>
+			            <input type="text" class="form-control" ng-model="password">            
+			        </div>
+			        <div class="form-group">
+			            <button class="btn btn-primary" ng-click="login()">登录</button>
+			            <button class="btn btn-primary" ng-click="login()">注册</button>
+			            <p class="text-danger" ng-if="msg.length>0">提示信息：{{msg}}</p>
+			        </div>
+			    </div>
+
+			 </uib-tab>
+			 
+             <uib-tab index="1" heading="快递员入口" >
+             	<div style="width: 600px; margin:0 auto; padding: 60px;">
+			        <h4>快递员登录</h4>
+			        <div class="form-group">
+			            <label>用户名</label>
+			            <input type="text" class="form-control" ng-model="username">            
+			        </div>
+			        <div class="form-group">
+			            <label>密码</label>
+			            <input type="text" class="form-control" ng-model="password">            
+			        </div>
+			        <div class="form-group">
+			            <button class="btn btn-primary" ng-click="login()">登录</button>
+			            <button class="btn btn-primary" ng-click="login()">注册</button>
+			            <p class="text-danger" ng-if="msg.length>0">提示信息：{{msg}}</p>
+			        </div>
+			    </div>
+             </uib-tab>
+             
+             <uib-tab index="2" heading="商家入口" >
+	             <div style="width: 600px; margin:0 auto; padding: 60px;">
+				        <h4>商家登录</h4>
+				        <div class="form-group">
+				            <label>用户名</label>
+				            <input type="text" class="form-control" ng-model="username">            
+				        </div>
+				        <div class="form-group">
+				            <label>密码</label>
+				            <input type="text" class="form-control" ng-model="password">            
+				        </div>
+				        <div class="form-group">
+				            <button class="btn btn-primary" ng-click="login()">登录</button>
+				            <button class="btn btn-primary" ng-click="login()">注册</button>
+				            <p class="text-danger" ng-if="msg.length>0">提示信息：{{msg}}</p>
+				        </div>
+				    </div>    
+             </uib-tab>
+             
+         </uib-tabset>
+     </div>
+ </body>
+ </html>
