@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="vendor/bootstrap/bootstrap.min.css" rel="stylesheet"/>
+    <script src="lib/js/angular/angular.js"></script>
+    <script src="lib/js/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+    <script src="js/connection.ser.js"></script>
+
+    <script>
+        angular.module('FoodApp', ['ui.bootstrap', 'Utils']).controller('FoodCtrl',
+        function ($scope, $window, $uibModal,Connection) {
+        	$scope.init = init;
+        	init();
+        	function init(){
+        		Connection.get('/api/food/Margot/foods',{},function(res){
+        			$scope.AllFood = res.data;
+        			alert(res.data);
+        		});
+        	}
+            
+       })
+    </script>
+  </head>
+  <body ng-app="FoodApp" ng-controller="FoodCtrl">
+  
+  	<table class="table table-striped table-bordered table-hover fee-table-bordered" style="top: 20px;">
+        <thead>
+        <tr>
+            <th class="text-center">food_id</th>
+            <th class="text-center">food_name</th>
+            <th class="text-center">food_price</th>
+            <th class="text-center">choose</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="food in AllFood">
+            <td class="text-center" ng-bind="food.id"></td>
+            <td class="text-center" ng-bind="food.foodName"></td>
+            <td class="text-center" ng-bind="food.price"></td>
+            <td class="text-center">
+                <button class="btn btn-sm btn-primary" data-ng-click="update(restaurant.id)">
+                    	提交订单
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>	
+    
+  </body>
+</html>
