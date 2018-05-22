@@ -41,4 +41,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	@Query(value = "SELECT restaurant.rest_id,orders.food_id,SUM(orders.amount) AS restaurantSum FROM orders INNER JOIN food ON orders.food_id = food.food_id INNER JOIN restaurant ON food.rest_id = restaurant.rest_id AND orders.c_id IS NOT NULL GROUP BY food.food_id ORDER BY restaurantSum DESC LIMIT 0,1;",nativeQuery = true)
 	public Object findTopRestaurantOrder();
 
+	@Query(value = "SELECT rest_id,amount FROM orders INNER JOIN food ON orders.food_id = food.food_id AND orders.o_ID = ?1;",nativeQuery = true)
+	public Object findRestaurantSaleNum(String orderID);
+	
 }

@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 
 import com.leonlu.code.sample.webapp.ws.domain.Order;
 import com.leonlu.code.sample.webapp.ws.repository.OrderRepository;
+import com.leonlu.code.sample.webapp.ws.repository.RestaurantRepository;
 
 @Service
 public class OrderService {
 	
 	@Autowired
 	private OrderRepository orderRepository;
+	@Autowired
+	private RestaurantRepository restaurantRepository;
 	
 	public Integer getMaxID() {
 		Integer id = orderRepository.getMaxID();
@@ -33,6 +36,14 @@ public class OrderService {
 	public void acceptOrder(String courierID,String orderID){
 		orderRepository.updateOrderByOrderID(courierID,orderID);
 		//餐厅销量
+		Object restIDAndSaleAmount = orderRepository.findRestaurantSaleNum(orderID);
+		String restID_saleAmount = restIDAndSaleAmount.toString();
+		String[] split = restID_saleAmount.split("\\,");
+		Integer restID = Integer.valueOf(split[0]);
+		Integer saleAmount = Integer.valueOf(split[1]);
+		String baseSaleNum = restaurantRepository.findRestaurantByID(restID.toString());
+		Integer addedSaleAmount = saleAmount + Integer.valueOf(baseSaleNum);
+		restaurantRepository.updateRestaurantSaleNum(addedSaleAmount.toString(), restID.toString());
 		//菜品
 	}
 	
