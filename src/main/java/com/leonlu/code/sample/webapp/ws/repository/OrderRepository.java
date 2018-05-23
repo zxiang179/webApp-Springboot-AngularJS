@@ -20,13 +20,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	public Integer getMaxID();
 
 	@Modifying
-	@Query(value = "INSERT INTO orders(o_ID,food_id,ID,amount) VALUES(?1,?2,?3,?4)", nativeQuery = true)
+	@Query(value = "INSERT INTO orders(o_ID,food_id,ID,amount,restaurant_advice) VALUES(?1,?2,?3,?4)", nativeQuery = true)
 	// ('40004','30004','10003',5)
 	void createOrder(String orderID, String foodID, String customerID,
-			Double amount);
+			Double amount,String restaurantAdvice);
 
-	@Query(value = "SELECT * FROM orders WHERE c_id IS NULL;", nativeQuery = true)
-	public List<Order> findAllCreatedOrders();
+	@Query(value = "SELECT * FROM orders WHERE c_id IS NULL and restaurant_advice = 'accepted';", nativeQuery = true)
+	public List<Order> findAllCreatedAndAcceptedOrder();
 
 	// UPDATE orders SET c_id = NULL WHERE o_ID = '40004'
 	@Modifying
@@ -43,5 +43,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	@Query(value = "SELECT rest_id,amount FROM orders INNER JOIN food ON orders.food_id = food.food_id AND orders.o_ID = ?1;",nativeQuery = true)
 	public Object findRestaurantSaleNum(String orderID);
+	
+	@Query(value = "select * from orders",nativeQuery = true)
+	public List<Order> findAllCreatedOrders();
 	
 }

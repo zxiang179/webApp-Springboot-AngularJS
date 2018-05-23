@@ -17,6 +17,9 @@ public class Order {
 	private String id;
 	@Column(name = "amount")
 	private Double amount;
+	//餐厅是否接受
+	@Column(name = "restaurantAdvice")
+	private String advice;
 	
 	//ID
 	@ManyToOne
@@ -61,6 +64,13 @@ public class Order {
 	public void setFood(Food food) {
 		this.food = food;
 	}
+	public String getAdvice() {
+		return advice;
+	}
+	public void setAdvice(String advice) {
+		this.advice = advice;
+	}
+	
 	
 	
 	

@@ -23,13 +23,18 @@ public class OrderService {
 		Integer id = orderRepository.getMaxID();
 		return id;
 	}
-
-	public void createOrder(String orderID, String customerID, String foodID, Double amount) {
-		orderRepository.createOrder(orderID, foodID, customerID, amount);
-	}
 	
 	public List<Order> findAllCreatedOrders(){
-		List<Order> allCreatedOrders = orderRepository.findAllCreatedOrders();
+		List<Order> orders = orderRepository.findAllCreatedOrders();
+		return orders;
+	}
+
+	public void createOrder(String orderID, String customerID, String foodID, Double amount,String restaurantAdvice) {
+		orderRepository.createOrder(orderID, foodID, customerID, amount,restaurantAdvice);
+	}
+	
+	public List<Order> findAllCreatedAndAcceptedOrder(){
+		List<Order> allCreatedOrders = orderRepository.findAllCreatedAndAcceptedOrder();
 		return allCreatedOrders;
 	}
 	

@@ -28,16 +28,22 @@ public class OrderController {
 	@RequestMapping(value="/create/order") 
 	public void createOrder(String customerID,String foodID,Double amount){
 		Integer maxID = orderService.getMaxID()+40001;
-		orderService.createOrder(maxID.toString(), customerID,foodID,amount);
+		orderService.createOrder(maxID.toString(), customerID,foodID,amount,"unaccepted");
+	}
+	
+	@RequestMapping(value = "/createdOrders")
+	public List<Order> findAllCreatedOrders(){
+		List<Order> orders = orderService.findAllCreatedOrders();
+		return orders;
 	}
 	
 	/**
-	 * 查找用户创建的订单
+	 * 查找用户创建并且被餐厅接受的订单
 	 * @return
 	 */
-	@RequestMapping(value="/createdOrders")
-	public List<Order> findAllCreatedOrder(){
-		List<Order> allCreatedOrders = orderService.findAllCreatedOrders();
+	@RequestMapping(value="/createdAndAcceptedOrders")
+	public List<Order> findAllCreatedAndAcceptedOrder(){
+		List<Order> allCreatedOrders = orderService.findAllCreatedAndAcceptedOrder();
 		return allCreatedOrders;
 	}
 	

@@ -1,3 +1,4 @@
+<!-- 餐厅看到的界面 所有订单的状态 -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,13 +11,13 @@
     <script src="js/connection.ser.js"></script>
 
     <script>
-        angular.module('FoodApp', ['ui.bootstrap', 'Utils']).controller('FoodCtrl',
+        angular.module('RestaurantApp', ['ui.bootstrap', 'Utils']).controller('RestaurantCtrl',
         function ($scope, $window, $uibModal,Connection) {
         	$scope.init = init;
         	init();
         	function init(){
         		Connection.get('/api/order/createdOrders',{},function(res){
-        			$scope.createdOrder = res.data;
+        			$scope.createdAndAcceptedOrders = res.data;
         			console.log(res.data)
         		});
         	}
@@ -24,7 +25,7 @@
        })
     </script>
   </head>
-  <body ng-app="FoodApp" ng-controller="FoodCtrl">
+  <body ng-app="RestaurantApp" ng-controller="RestaurantCtrl">
   
   	<table class="table table-striped table-bordered table-hover fee-table-bordered" style="top: 20px;">
         <thead>
@@ -33,17 +34,19 @@
             <th class="text-center">Food_Name</th>
             <th class="text-center">Customer_Name</th>
             <th class="text-center">Amount</th>
+            <th class="text-center">Restaurant_Advice</th>
             <th class="text-center">Choose</th>
         </tr>
         </thead>
         <tbody>
         
         
-        <tr ng-repeat="order in createdOrder">
+        <tr ng-repeat="order in createdAndAcceptedOrders">
             <td class="text-center" ng-bind="order.id"></td>
             <td class="text-center" ng-bind="order.food.foodName"></td>
             <td class="text-center" ng-bind="order.customerID.name"></td>
             <td class="text-center" ng-bind="order.amount"></td>
+            <td class="text-center" ng-bind="order.advice"></td>
             <td class="text-center">
                 <button class="btn btn-sm btn-primary" data-ng-click="update(restaurant.id)">
                     	接受订单

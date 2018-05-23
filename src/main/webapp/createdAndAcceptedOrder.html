@@ -1,4 +1,4 @@
-<!-- 用户看到的界面2 -->
+<!-- 快递员看到的界面 -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,39 +11,43 @@
     <script src="js/connection.ser.js"></script>
 
     <script>
-        angular.module('FoodApp', ['ui.bootstrap', 'Utils']).controller('FoodCtrl',
+        angular.module('CourierApp', ['ui.bootstrap', 'Utils']).controller('CourierCtrl',
         function ($scope, $window, $uibModal,Connection) {
         	$scope.init = init;
         	init();
         	function init(){
-        		Connection.get('/api/food/Margot/foods',{},function(res){
-        			$scope.AllFood = res.data;
-        			alert(res.data);
+        		Connection.get('/api/order/createdAndAcceptedOrders',{},function(res){
+        			$scope.createdAndAcceptedOrders = res.data;
+        			console.log(res.data)
         		});
         	}
             
        })
     </script>
   </head>
-  <body ng-app="FoodApp" ng-controller="FoodCtrl">
+  <body ng-app="CourierApp" ng-controller="CourierCtrl">
   
   	<table class="table table-striped table-bordered table-hover fee-table-bordered" style="top: 20px;">
         <thead>
         <tr>
-            <th class="text-center">food_id</th>
-            <th class="text-center">food_name</th>
-            <th class="text-center">food_price</th>
-            <th class="text-center">choose</th>
+            <th class="text-center">Order_id</th>
+            <th class="text-center">Food_Name</th>
+            <th class="text-center">Customer_Name</th>
+            <th class="text-center">Amount</th>
+            <th class="text-center">Choose</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="food in AllFood">
-            <td class="text-center" ng-bind="food.id"></td>
-            <td class="text-center" ng-bind="food.foodName"></td>
-            <td class="text-center" ng-bind="food.price"></td>
+        
+        
+        <tr ng-repeat="order in createdAndAcceptedOrders">
+            <td class="text-center" ng-bind="order.id"></td>
+            <td class="text-center" ng-bind="order.food.foodName"></td>
+            <td class="text-center" ng-bind="order.customerID.name"></td>
+            <td class="text-center" ng-bind="order.amount"></td>
             <td class="text-center">
                 <button class="btn btn-sm btn-primary" data-ng-click="update(restaurant.id)">
-                    	提交订单
+                    	开始派件
                 </button>
             </td>
         </tr>
