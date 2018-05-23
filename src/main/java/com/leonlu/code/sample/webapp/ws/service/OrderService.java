@@ -19,9 +19,18 @@ public class OrderService {
 	@Autowired
 	private RestaurantRepository restaurantRepository;
 	
+	public List<Order> findAllOrders(){
+		List<Order> allOrders = orderRepository.findAllOrders();
+		return allOrders;
+	}
+	
 	public Integer getMaxID() {
 		Integer id = orderRepository.getMaxID();
 		return id;
+	}
+	
+	public void updateOrderRestaurantAdvice(String orderID){
+		orderRepository.updateOrderRestaurantAdvice(orderID);
 	}
 	
 	public List<Order> findAllCreatedOrders(){

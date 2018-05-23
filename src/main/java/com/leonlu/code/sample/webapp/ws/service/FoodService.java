@@ -14,6 +14,11 @@ public class FoodService {
 	@Autowired
 	private FoodRepository foodRepository;
 	
+	public List<Food> findAllFood(){
+		List<Food> allFood = foodRepository.findAllFood();
+		return allFood;
+	}
+	
 	public List<Food> findFoodByRestaurantName(String restaurantName){
 		List<Food> allFood = foodRepository.findFoodByRestaurantName(restaurantName);
 		return allFood;

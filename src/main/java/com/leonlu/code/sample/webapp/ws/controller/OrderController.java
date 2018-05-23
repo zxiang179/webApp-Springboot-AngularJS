@@ -18,6 +18,19 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	
+	@RequestMapping(value = "/orders")
+	public List<Order> findAllOrders(){
+		return orderService.findAllOrders();
+	}
+	
+	/**
+	 * 餐厅将restaurantAdvice 改为 accepted 
+	 */
+	@RequestMapping(value = "/update/orderRestaurantAdvice")
+	public void updateOrderRestaurantAdvice(String orderID){
+		orderService.updateOrderRestaurantAdvice(orderID);
+	}
+	
 	/**
 	 * 用户创建订单
 	 * @param customerID

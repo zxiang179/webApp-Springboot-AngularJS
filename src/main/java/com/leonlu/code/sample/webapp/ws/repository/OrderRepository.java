@@ -47,4 +47,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	@Query(value = "select * from orders",nativeQuery = true)
 	public List<Order> findAllCreatedOrders();
 	
+	@Query(value = "UPDATE orders SET restaurant_advice = 'accepted' WHERE o_ID = ?1" , nativeQuery = true)
+	@Modifying
+	public void updateOrderRestaurantAdvice(String orderID);
+	
+	@Query(value = "select * from orders",nativeQuery = true)
+	public List<Order> findAllOrders();
+	
 }

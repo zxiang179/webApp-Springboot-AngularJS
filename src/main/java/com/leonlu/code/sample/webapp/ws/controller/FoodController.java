@@ -18,6 +18,12 @@ public class FoodController {
 	@Autowired
 	private FoodService foodService;
 	
+	@RequestMapping("/foods")
+	public List<Food> findAllFood(){
+		List<Food> allFood = foodService.findAllFood();
+		return allFood;
+	}
+	
 	/**
 	 * 根据餐厅名称查找食物
 	 * @param restaurantName

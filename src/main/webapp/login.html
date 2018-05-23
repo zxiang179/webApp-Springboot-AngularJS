@@ -18,6 +18,37 @@
             $scope.showCustomerRegisterpanel = showCustomerRegisterpanel;
             $scope.showCourierRegisterpanel = showCourierRegisterpanel;
             $scope.showRestaurantRegisterpanel = showRestaurantRegisterpanel;
+            $scope.showCustomer = showCustomer;
+            $scope.showCourier = showCourier
+            $scope.showRestaurant = showRestaurant;
+            $scope.showFood = showFood;
+            $scope.showOrder = showOrder;
+            
+            function showCustomer() {
+                Connection.get('/api/customer/customers',{},function (res) {
+                    alert(res.data);
+                });
+            }
+            function showCourier() {
+                Connection.get('/api/courier/couriers',{},function (res) {
+                    alert(res.data);
+                });
+            }
+            function showRestaurant() {
+                Connection.get('/api/restaurant/restaurants',{},function (res) {
+                    alert(res.data);
+                });
+            }
+            function showFood() {
+                Connection.get('/api/food/foods',{},function (res) {
+                    alert(res.data);
+                });
+            }
+            function showOrder() {
+                Connection.get('/api/order/orders',{},function (res) {
+                    alert(res.data);
+                });
+            }
             function login(object,url) {
                 Connection.get(url,{"name":object.username,"phone":object.phone},function (res) {
                     alert(res.data);
@@ -138,6 +169,20 @@
           </div>
         </uib-tab>
 
+		<uib-tab index="3" heading="查询接口">
+          <div style="width: 600px; margin:0 auto; padding: 60px;">
+            <h4>信息查询</h4>
+            
+            <div class="form-group">
+              <button class="btn btn-primary" ng-click="showCustomer()">用户查询</button>
+              <button class="btn btn-primary" ng-click="showCourier()">快递员查询</button>
+              <button class="btn btn-primary" ng-click="showRestaurant()">餐厅查询</button>
+              <button class="btn btn-primary" ng-click="showFood">食物查询</button>
+              <button class="btn btn-primary" ng-click="showOrder()">订单查询</button>
+            </div>
+          </div>
+        </uib-tab>
+        
       </uib-tabset>
     </div>
   </body>
