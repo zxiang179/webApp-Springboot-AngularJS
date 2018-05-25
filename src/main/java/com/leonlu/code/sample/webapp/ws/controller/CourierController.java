@@ -39,7 +39,6 @@ public class CourierController {
 	 * 快递员注册
 	 * @param name
 	 * @param phone
-	 * @param address
 	 * @return
 	 */
 	//http://localhost:8080/api/courier/register?name=zx&phone=13127879080

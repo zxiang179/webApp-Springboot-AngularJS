@@ -13,27 +13,48 @@
     <script>
         angular.module('FoodApp', ['ui.bootstrap', 'Utils']).controller('FoodCtrl',
         function ($scope, $window, $uibModal,Connection) {
-        	$scope.init = init;
-        	init();
-        	function init(){
-        		Connection.get('/api/food/Margot/foods',{},function(res){
-        			$scope.AllFood = res.data;
-        			alert(res.data);
-        		});
-        	}
-            
+
+            $scope.amounts = [];
+
+            $scope.submit = submit;
+            $scope.back = back;
+
+            init();
+            function init(){
+                var rest_id = window.location.search.split("=")[1];
+                Connection.get('/api/food/'+rest_id+'/foods',{},function(res){
+                  $scope.AllFood = res.data;
+                  for(var i=0;i<$scope.AllFood.length;i++)
+                      $scope.amounts.push(0);
+                });
+            }
+
+            function submit(id,amount) {
+                var param = {};
+                param["foodID"] = id+"";
+                param["amount"] = amount;
+                Connection.get('/api/order/create/order',param,function(res){
+                    alert("submit order success!")
+                });
+            }
+
+            function back() {
+                window.location.href='http://localhost:8080/restaurantList.html';
+            }
+
        })
     </script>
   </head>
   <body ng-app="FoodApp" ng-controller="FoodCtrl">
-  
+
   	<table class="table table-striped table-bordered table-hover fee-table-bordered" style="top: 20px;">
         <thead>
         <tr>
             <th class="text-center">food_id</th>
             <th class="text-center">food_name</th>
             <th class="text-center">food_price</th>
-            <th class="text-center">choose</th>
+            <th class="text-center">amount</th>
+            <th class="text-center">operation</th>
         </tr>
         </thead>
         <tbody>
@@ -41,14 +62,17 @@
             <td class="text-center" ng-bind="food.id"></td>
             <td class="text-center" ng-bind="food.foodName"></td>
             <td class="text-center" ng-bind="food.price"></td>
+            <td class="text-center"  width="50px;">
+              <input class="form-control text-center" ng-model="amounts[$index]">
+            </td>
             <td class="text-center">
-                <button class="btn btn-sm btn-primary" data-ng-click="update(restaurant.id)">
-                    	提交订单
+                <button class="btn btn-sm btn-primary" data-ng-click="submit(food.id,amounts[$index])">
+                    	submit
                 </button>
             </td>
         </tr>
         </tbody>
-    </table>	
-    
+    </table>
+    <button class="btn btn-link" style="float: right;margin-right: 180px;font-size: 20px;" ng-click="back()">back</button>
   </body>
 </html>

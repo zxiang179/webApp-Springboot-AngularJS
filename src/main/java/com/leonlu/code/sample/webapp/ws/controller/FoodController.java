@@ -26,12 +26,12 @@ public class FoodController {
 	
 	/**
 	 * 根据餐厅名称查找食物
-	 * @param restaurantName
+	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/{restaurantName}/foods")
-	public List<Food> findFoodByRestaurantName(@PathVariable String restaurantName){
-		List<Food> allFood = foodService.findFoodByRestaurantName(restaurantName);
+	@RequestMapping("/{id}/foods")
+	public List<Food> findFoodByRestaurantName(@PathVariable String id){
+		List<Food> allFood = foodService.findFoodById(id);
 		return allFood;
 	}
 

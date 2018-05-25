@@ -19,8 +19,8 @@ public class FoodService {
 		return allFood;
 	}
 	
-	public List<Food> findFoodByRestaurantName(String restaurantName){
-		List<Food> allFood = foodRepository.findFoodByRestaurantName(restaurantName);
+	public List<Food> findFoodById(String id){
+		List<Food> allFood = foodRepository.findFoodById(id);
 		return allFood;
 	}
 	

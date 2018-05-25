@@ -50,14 +50,11 @@ public class OrderService {
 	public void acceptOrder(String courierID,String orderID){
 		orderRepository.updateOrderByOrderID(courierID,orderID);
 		//餐厅销量
-		Object restIDAndSaleAmount = orderRepository.findRestaurantSaleNum(orderID);
-		String restID_saleAmount = restIDAndSaleAmount.toString();
-		String[] split = restID_saleAmount.split("\\,");
-		Integer restID = Integer.valueOf(split[0]);
-		Integer saleAmount = Integer.valueOf(split[1]);
-		String baseSaleNum = restaurantRepository.findRestaurantByID(restID.toString());
+		Object[] restIDAndSaleAmount = (Object[])orderRepository.findRestaurantSaleNum(orderID);
+		Integer saleAmount = Integer.valueOf(restIDAndSaleAmount[1].toString().split("\\.")[0]);
+		String baseSaleNum = restaurantRepository.findRestaurantByID(restIDAndSaleAmount[0].toString());
 		Integer addedSaleAmount = saleAmount + Integer.valueOf(baseSaleNum);
-		restaurantRepository.updateRestaurantSaleNum(addedSaleAmount.toString(), restID.toString());
+		restaurantRepository.updateRestaurantSaleNum(addedSaleAmount.toString(), restIDAndSaleAmount[0].toString());
 		//菜品
 	}
 	

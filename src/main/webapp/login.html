@@ -19,39 +19,62 @@
             $scope.showCourierRegisterpanel = showCourierRegisterpanel;
             $scope.showRestaurantRegisterpanel = showRestaurantRegisterpanel;
             $scope.showCustomer = showCustomer;
-            $scope.showCourier = showCourier
+            $scope.showCourier = showCourier;
             $scope.showRestaurant = showRestaurant;
             $scope.showFood = showFood;
-            $scope.showOrder = showOrder;
-            
+            $scope.showBestFood = showBestFood;
+            $scope.showBestRestaurant = showBestRestaurant;
+
             function showCustomer() {
                 Connection.get('/api/customer/customers',{},function (res) {
-                    alert(res.data);
+                    $scope.heads = ["name","phone","address"];
+                    $scope.fields = ["name","phone","address"];
+                    $scope.values = res.data;
                 });
             }
             function showCourier() {
                 Connection.get('/api/courier/couriers',{},function (res) {
-                    alert(res.data);
+                    $scope.heads = ["name","phone"];
+                    $scope.fields = ["name","phone"];
+                    $scope.values = res.data;
                 });
             }
             function showRestaurant() {
                 Connection.get('/api/restaurant/restaurants',{},function (res) {
-                    alert(res.data);
+                    $scope.heads = ["name","phone","address","credits","sales_volume"];
+                    $scope.fields = ["name","phone","address","credits","saleNumber"];
+                    $scope.values = res.data;
                 });
             }
             function showFood() {
                 Connection.get('/api/food/foods',{},function (res) {
-                    alert(res.data);
+                    $scope.heads = ["foodName","price"];
+                    $scope.fields = ["foodName","price"];
+                    $scope.values = res.data;
                 });
             }
-            function showOrder() {
-                Connection.get('/api/order/orders',{},function (res) {
-                    alert(res.data);
+            function showBestFood() {
+                Connection.get('/api/order/findTopFoodOrder',{},function (res) {
+                    alert("name:"+res.data[0]+",price:"+res.data[1]+",amount:"+res.data[2]);
+                });
+            }
+            function showBestRestaurant() {
+                Connection.get('/api/order/findTopRestaurantOrder',{},function (res) {
+                    alert("name:"+res.data[0]+",phone:"+res.data[2]+",total amount:"+res.data[3]+",address:"+res.data[1]);
                 });
             }
             function login(object,url) {
                 Connection.get(url,{"name":object.username,"phone":object.phone},function (res) {
-                    alert(res.data);
+                    if(res.data == false){
+                        alert("username or phone is wrong!");
+                    }else{
+                      if(url=="/api/customer/login")
+                          window.location.href='http://localhost:8080/restaurantList.html';
+                      else if(url=="/api/courier/login")
+                          window.location.href='http://localhost:8080/createdAndAcceptedOrder.html';
+                      else if(url=="/api/restaurant/login")
+                          window.location.href='http://localhost:8080/createdOrder.html';
+                    }
                 });
             }
 
@@ -141,7 +164,7 @@
             </div>
             <div class="form-group">
               <label>密码</label>
-              <input type="text" class="form-control" ng-model="courier.password">
+              <input type="text" class="form-control" ng-model="courier.phone">
             </div>
             <div class="form-group">
               <button class="btn btn-primary" ng-click="login(courier,'/api/courier/login')">登录</button>
@@ -159,7 +182,7 @@
             </div>
             <div class="form-group">
               <label>密码</label>
-              <input type="text" class="form-control" ng-model="restaurant.password">
+              <input type="text" class="form-control" ng-model="restaurant.phone">
             </div>
             <div class="form-group">
               <button class="btn btn-primary" ng-click="login(restaurant,'/api/restaurant/login')">登录</button>
@@ -170,16 +193,32 @@
         </uib-tab>
 
 		<uib-tab index="3" heading="查询接口">
-          <div style="width: 600px; margin:0 auto; padding: 60px;">
+          <div style="width: 70%; margin:0 auto; padding: 60px;">
             <h4>信息查询</h4>
             
             <div class="form-group">
               <button class="btn btn-primary" ng-click="showCustomer()">用户查询</button>
               <button class="btn btn-primary" ng-click="showCourier()">快递员查询</button>
               <button class="btn btn-primary" ng-click="showRestaurant()">餐厅查询</button>
-              <button class="btn btn-primary" ng-click="showFood">食物查询</button>
-              <button class="btn btn-primary" ng-click="showOrder()">订单查询</button>
+              <button class="btn btn-primary" ng-click="showFood()">食物查询</button>
+              <button class="btn btn-primary" ng-click="showBestFood()">最畅销实物</button>
+              <button class="btn btn-primary" ng-click="showBestRestaurant()">最畅销餐厅</button>
             </div>
+
+            <table class="table table-striped table-bordered table-hover fee-table-bordered">
+              <thead>
+                <tr>
+                  <td class="text-center" ng-repeat="head in heads">{{head}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="value in values">
+                  <td class="text-center" ng-repeat="field in fields">
+                    {{value[field]}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </uib-tab>
         

@@ -13,14 +13,22 @@
     <script>
         angular.module('CourierApp', ['ui.bootstrap', 'Utils']).controller('CourierCtrl',
         function ($scope, $window, $uibModal,Connection) {
-        	$scope.init = init;
+        	$scope.accept = accept;
         	init();
         	function init(){
-        		Connection.get('/api/order/createdAndAcceptedOrders',{},function(res){
-        			$scope.createdAndAcceptedOrders = res.data;
-        			console.log(res.data)
-        		});
+              Connection.get('/api/order/createdAndAcceptedOrders',{},function(res){
+                $scope.createdAndAcceptedOrders = res.data;
+              });
         	}
+
+        	function accept(index) {
+        	    var param = {};
+        	    param["orderID"] = $scope.createdAndAcceptedOrders[index].id;
+              Connection.get('/api/order/acceptOrder',param,function(res){
+                  $scope.createdAndAcceptedOrders.splice(index,1);
+                  alert("accept order success!");
+              });
+          }
             
        })
     </script>
@@ -46,8 +54,8 @@
             <td class="text-center" ng-bind="order.customerID.name"></td>
             <td class="text-center" ng-bind="order.amount"></td>
             <td class="text-center">
-                <button class="btn btn-sm btn-primary" data-ng-click="update(restaurant.id)">
-                    	开始派件
+                <button class="btn btn-sm btn-primary" data-ng-click="accept($index)">
+                    	accept
                 </button>
             </td>
         </tr>

@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 import com.leonlu.code.sample.webapp.ws.domain.Courier;
 import com.leonlu.code.sample.webapp.ws.domain.Customer;
 import com.leonlu.code.sample.webapp.ws.repository.CourierRepository;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Service
 public class CourierService {
@@ -39,6 +44,9 @@ public class CourierService {
 		if(courier == null) {
 			return false;
 		}else {
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+			HttpSession session = request.getSession();
+			session.setAttribute("courierId", courier.getId());
 			return true;
 		}
 	}

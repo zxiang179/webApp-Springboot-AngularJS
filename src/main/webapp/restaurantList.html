@@ -18,15 +18,18 @@
         	function init(){
         		Connection.get('/api/restaurant/restaurants',{},function(res){
         			$scope.restaurants = res.data;
-        			alert(res.data);
+        			$scope.goRestaurant = goRestaurant;
+        			function goRestaurant(id){
+                  window.location.href='http://localhost:8080/foodList.html?id='+id;
+              }
         		});
         	}
-            
+
        })
     </script>
   </head>
   <body ng-app="RestaurantApp" ng-controller="RestaurantCtrl">
-  
+
   	<table class="table table-striped table-bordered table-hover fee-table-bordered" style="top: 20px;">
         <thead>
         <tr>
@@ -48,13 +51,13 @@
             <td class="text-center" ng-bind="restaurant.saleNumber"></td>
             <td class="text-center" ng-bind="restaurant.credits"></td>
             <td class="text-center">
-                <button class="btn btn-sm btn-primary" data-ng-click="update(restaurant.id)">
+                <button class="btn btn-sm btn-primary" data-ng-click="goRestaurant(restaurant.id)">
                     	选择
                 </button>
             </td>
         </tr>
         </tbody>
-    </table>	
-    
+    </table>
+
   </body>
 </html>

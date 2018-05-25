@@ -22,4 +22,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 	@Query(value = "select * from food",nativeQuery = true)
 	public List<Food> findAllFood();
 
+	@Query(value = "SELECT * FROM food WHERE food.rest_id = (SELECT restaurant.rest_id FROM restaurant WHERE restaurant.rest_id = ?1)", nativeQuery = true)
+	public List<Food> findFoodById(String id);
+
 }

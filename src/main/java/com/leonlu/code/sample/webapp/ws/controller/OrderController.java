@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.leonlu.code.sample.webapp.ws.domain.Order;
 import com.leonlu.code.sample.webapp.ws.domain.Restaurant;
 import com.leonlu.code.sample.webapp.ws.service.OrderService;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/order")
@@ -32,16 +37,16 @@ public class OrderController {
 	}
 	
 	/**
-	 * 用户创建订单
-	 * @param customerID
 	 * @param foodID
 	 * @param amount
 	 */
-	//localhost:8080/api/order/create/order?customerID=10003&foodID=30004&amount=5
 	@RequestMapping(value="/create/order") 
-	public void createOrder(String customerID,String foodID,Double amount){
+	public void createOrder(String foodID,String amount){
 		Integer maxID = orderService.getMaxID()+40001;
-		orderService.createOrder(maxID.toString(), customerID,foodID,amount,"unaccepted");
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpSession session = request.getSession();
+		String customerID = (String)session.getAttribute("customerId");
+		orderService.createOrder(maxID.toString(), customerID,foodID,Double.valueOf(amount),"unaccepted");
 	}
 	
 	@RequestMapping(value = "/createdOrders")
@@ -65,9 +70,11 @@ public class OrderController {
 	 * @param orderID
 	 * @return
 	 */
-	//http://localhost:8080/api/order/acceptOrder?courierID=50005?orderID=40004
 	@RequestMapping(value="/acceptOrder")
-	public void acceptOrder(String courierID,String orderID){
+	public void acceptOrder(String orderID){
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpSession session = request.getSession();
+		String courierID = (String)session.getAttribute("courierId");
 		orderService.acceptOrder(courierID,orderID);
 	}
 	

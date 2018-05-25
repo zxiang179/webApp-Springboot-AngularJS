@@ -34,7 +34,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 	@Query(value = "select * from restaurant where rest_name = ?1 and phone = ?2", nativeQuery = true)
 	public Restaurant findRestaurantByNameAndPhone(String name, String phone);
 	
-	@Query(value = "SELECT sale_number FROM restaurant WHERE restaurant_id=?1;",nativeQuery = true)
+	@Query(value = "SELECT sale_number FROM restaurant WHERE rest_id=?1",nativeQuery = true)
 	public String findRestaurantByID(String restaurantID);
 	
     @Query(value = "UPDATE restaurant SET restaurant.sale_number = ?1 WHERE restaurant.rest_id = ?2", nativeQuery = true)

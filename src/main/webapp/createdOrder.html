@@ -13,14 +13,22 @@
     <script>
         angular.module('RestaurantApp', ['ui.bootstrap', 'Utils']).controller('RestaurantCtrl',
         function ($scope, $window, $uibModal,Connection) {
-        	$scope.init = init;
-        	init();
-        	function init(){
-        		Connection.get('/api/order/createdOrders',{},function(res){
-        			$scope.createdAndAcceptedOrders = res.data;
-        			console.log(res.data)
-        		});
-        	}
+            $scope.accept = accept;
+            init();
+            function init(){
+              Connection.get('/api/order/createdOrders',{},function(res){
+                $scope.createdAndAcceptedOrders = res.data;
+              });
+            }
+
+            function accept(index) {
+                var param = {};
+                param["orderID"] = $scope.createdAndAcceptedOrders[index].id;
+                Connection.get('/api/order/update/orderRestaurantAdvice',param,function(res){
+                    $scope.createdAndAcceptedOrders.splice(index,1);
+                    alert("accept success!");
+                });
+            }
             
        })
     </script>
@@ -33,25 +41,19 @@
             <th class="text-center">Order_id</th>
             <th class="text-center">Food_Name</th>
             <th class="text-center">Customer_Name</th>
-            <th class="text-center">Courier_Name</th>
             <th class="text-center">Amount</th>
-            <th class="text-center">Restaurant_Advice</th>
             <th class="text-center">Choose</th>
         </tr>
         </thead>
         <tbody>
-        
-        
         <tr ng-repeat="order in createdAndAcceptedOrders">
             <td class="text-center" ng-bind="order.id"></td>
             <td class="text-center" ng-bind="order.food.foodName"></td>
             <td class="text-center" ng-bind="order.customerID.name"></td>
-            <td class="text-center" ng-bind="order.courier.name"></td>
             <td class="text-center" ng-bind="order.amount"></td>
-            <td class="text-center" ng-bind="order.advice"></td>
             <td class="text-center">
-                <button class="btn btn-sm btn-primary" data-ng-click="update(restaurant.id)">
-                    	接受订单
+                <button class="btn btn-sm btn-primary" data-ng-click="accept($index)">
+                  accept
                 </button>
             </td>
         </tr>
